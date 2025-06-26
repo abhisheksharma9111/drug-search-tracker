@@ -1,66 +1,111 @@
+Here’s a complete `README.md` file for your **Drug Search and Tracker API** project:
+
+````markdown
 # Drug Search and Tracker API
 
 A Laravel-based API service for drug information search and user-specific medication tracking.
 
 ## Features
 
--   User authentication (register/login)
--   Public drug search using RxNorm API
--   User medication tracking (add/remove/list)
--   Rate limiting for public endpoints
--   Caching of RxNorm API responses
+- User authentication (register/login)
+- Public drug search using [RxNorm API](https://rxnav.nlm.nih.gov/)
+- User medication tracking (add/remove/list)
+- Rate limiting for public endpoints
+- Caching of RxNorm API responses
 
 ## Installation
 
-1. Clone the repository
-2. Install dependencies:
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/your-username/drug-search-tracker.git
+cd drug-search-tracker
+````
+
+2. **Install PHP dependencies**
 
 ```bash
 composer install
 ```
 
-3. Create and configure and add this variables `.env` file
+3. **Create `.env` file and configure environment variables**
 
-    CACHE_DRIVER=file
-    QUEUE_CONNECTION=sync
-    QUEUE_FAILED_DRIVER=database
-    QUEUE_FAILED_DATABASE=drug-search-tracker
+Copy the `.env.example` to `.env`:
 
-    # Install predis for redis support
+```bash
+cp .env.example .env
+```
 
-    `composer require predis/predis`
+Then update the following in your `.env` file:
 
-4. Run migrations: `php artisan migrate`
-5. Generate application key: `php artisan key:generate`
+```env
+CACHE_DRIVER=file
+QUEUE_CONNECTION=sync
+QUEUE_FAILED_DRIVER=database
+QUEUE_FAILED_DATABASE=drug-search-tracker
+```
+
+4. **Install Redis support (optional but recommended)**
+
+```bash
+composer require predis/predis
+```
+
+5. **Run migrations**
+
+```bash
+php artisan migrate
+```
+
+6. **Generate application key**
+
+```bash
+php artisan key:generate
+```
 
 ## API Endpoints
 
 ### Authentication
 
--   `POST /api/register` - Register a new user
--   `POST /api/login` - Login user
+* `POST /api/register` — Register a new user
+* `POST /api/login` — Login and receive a token
 
-### Drug Search
+### Drug Search (Public)
 
--   `GET /api/drugs/search?drug_name={name}` - Search for drugs (public)
+* `GET /api/drugs/search?drug_name={name}` — Search for a drug using name (cached)
 
-### User Medications (require authentication)
+### User Medications (Authenticated)
 
--   `GET /api/user/medications` - Get user's medications
--   `POST /api/user/medications` - Add a medication (payload: `rxcui`)
--   `DELETE /api/user/medications/{rxcui}` - Remove a medication
+* `GET /api/user/medications` — Get all medications saved by the user
+* `POST /api/user/medications` — Add a medication
+  **Payload:**
+
+  ```json
+  {
+    "rxcui": "123456"
+  }
+  ```
+* `DELETE /api/user/medications/{rxcui}` — Remove a medication by its RxCUI
 
 ## Testing
 
-Run tests with:
+Run all tests using:
 
 ```bash
 php artisan test
 ```
 
-# Start development server
+## Start Development Server
 
 ```bash
 php artisan serve
+```
 
+## License
+
+This project is open-source and available under the [MIT License](LICENSE).
+
+```
+
+Let me know if you'd like me to generate a `LICENSE` file or setup example responses for the endpoints.
 ```
