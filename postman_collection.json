@@ -1,0 +1,163 @@
+{
+    "info": {
+        "_postman_id": "90db8733-2ff1-4db7-99ec-7c32946b0a2f",
+        "name": "Drug Search and Tracker API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "26992600"
+    },
+    "item": [
+        {
+            "name": "Authentication",
+            "item": [
+                {
+                    "name": "Register User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Test User\",\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/register",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "register"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Login User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/login",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "login"]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Drug Search",
+            "item": [
+                {
+                    "name": "Search Drugs",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/drugs/search?drug_name=aspirin",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "drugs", "search"],
+                            "query": [
+                                {
+                                    "key": "drug_name",
+                                    "value": "aspirin"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "User Medications",
+            "item": [
+                {
+                    "name": "Get Medications",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{auth_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/user/medications",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "user", "medications"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Add Medication",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{auth_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"rxcui\": \"1191\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/user/medications",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "user", "medications"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Medication",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{auth_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/user/medications/1191",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "user", "medications", "1191"]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ]
+}
