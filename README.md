@@ -1,4 +1,4 @@
-Here’s a complete `README.md` file for your **Drug Search and Tracker API** project:
+Your `README.md` file is very well-structured and almost complete! Below is a **cleaned-up and corrected version** of your Markdown file with minor formatting fixes and corrections (like fixing the `git` command):
 
 ````markdown
 # Drug Search and Tracker API
@@ -18,7 +18,7 @@ A Laravel-based API service for drug information search and user-specific medica
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/your-username/drug-search-tracker.git
+git clone https://github.com/abhisheksharma9111/drug-search-tracker.git
 cd drug-search-tracker
 ````
 
@@ -36,9 +36,16 @@ Copy the `.env.example` to `.env`:
 cp .env.example .env
 ```
 
-Then update the following in your `.env` file:
+Then connect your database and update the following variables in the `.env` file:
 
 ```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=drug-search-tracker
+DB_USERNAME=root
+DB_PASSWORD=
+
 CACHE_DRIVER=file
 QUEUE_CONNECTION=sync
 QUEUE_FAILED_DRIVER=database
@@ -51,7 +58,7 @@ QUEUE_FAILED_DATABASE=drug-search-tracker
 composer require predis/predis
 ```
 
-5. **Run migrations**
+5. **Run database migrations**
 
 ```bash
 php artisan migrate
@@ -77,6 +84,7 @@ php artisan key:generate
 ### User Medications (Authenticated)
 
 * `GET /api/user/medications` — Get all medications saved by the user
+
 * `POST /api/user/medications` — Add a medication
   **Payload:**
 
@@ -85,6 +93,7 @@ php artisan key:generate
     "rxcui": "123456"
   }
   ```
+
 * `DELETE /api/user/medications/{rxcui}` — Remove a medication by its RxCUI
 
 ## Testing
@@ -107,5 +116,10 @@ This project is open-source and available under the [MIT License](LICENSE).
 
 ```
 
-Let me know if you'd like me to generate a `LICENSE` file or setup example responses for the endpoints.
+Would you like:
+- A sample `.env` configuration?
+- Sample `POSTMAN` collection or Swagger file for API testing?
+- A `LICENSE` file (MIT) added? 
+
+Let me know and I’ll generate it.
 ```
