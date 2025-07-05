@@ -15,10 +15,10 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('rxcui');
             $table->string('name');
-            $table->json('base_names');
-            $table->json('dosage_forms');
+            $table->json('base_names')->nullable();
+            $table->json('dosage_forms')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
-
             $table->unique(['user_id', 'rxcui']);
         });
     }

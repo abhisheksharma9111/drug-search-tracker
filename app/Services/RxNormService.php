@@ -250,14 +250,16 @@ class RxNormService
             return null;
         }
 
+
+
         $cacheKey = "drug_name_" . md5($rxcui);
 
         return Cache::remember($cacheKey, now()->addHours(12), function () use ($rxcui) {
             try {
                 $response = Http::timeout($this->timeout)
                     ->retry($this->maxRetries, $this->retryDelay)
-                    ->get("{$this->baseUrl}/rxcui/{$rxcui}/property.json", [
-                        'propName' => 'RxNorm Name,Display Name'
+                    ->get("{$this->baseUrl}/rxcui/{$rxcui}/related.json", [
+                        'tty' => 'SBD' 
                     ]);
 
                 if (!$response->successful()) {
@@ -265,10 +267,39 @@ class RxNormService
                 }
 
                 $data = $response->json();
-                return $data['propConceptGroup']['propConcept'][0]['propValue'] ?? null;
+                
+
+                // Search through conceptGroups for SBD entries
+                foreach ($data['drugGroup']['conceptGroup'] ?? [] as $conceptGroup) {
+                   
+                    if (($conceptGroup['tty'] ?? null) === 'SBD') {
+                        foreach ($conceptGroup['conceptProperties'] ?? [] as $concept) {
+                            
+                            if ($concept['rxcui'] == (int)$rxcui) {
+                                return $concept['name'] ?? $concept['synonym'] ?? null;
+                            }
+                        }
+                    }
+                }
+
+                foreach ($data['relatedGroup']['conceptGroup'] ?? [] as $conceptGroup) {
+                   
+                    if (($conceptGroup['tty'] ?? null) === 'SBD') {
+                        foreach ($conceptGroup['conceptProperties'] ?? [] as $concept) {
+                           
+                            if ($concept['rxcui'] == (int)$rxcui) {
+                                return $concept['name'] ?? $concept['synonym'] ?? null;
+                            }
+                        }
+                    }
+                }
+                return null;
 
             } catch (RequestException $e) {
-                Log::warning('Drug name fetch failed', ['rxcui' => $rxcui]);
+                Log::warning('Drug name fetch failed', [
+                    'rxcui' => $rxcui,
+                    'error' => $e->getMessage()
+                ]);
                 return null;
             }
         });

@@ -18,9 +18,9 @@ class DrugSearchController extends Controller
     public function search(Request $request)
     {
         $executed = RateLimiter::attempt(
-            'drug-search:'.$request->ip(),
+            'drug-search:' . $request->ip(),
             10,
-            function() {},
+            function () {},
             60
         );
 
@@ -34,8 +34,14 @@ class DrugSearchController extends Controller
 
         $results = $this->rxNormService->searchDrugs($request->drug_name);
 
+
         if (!$results) {
             return response()->json(['message' => 'Failed to fetch drug information'], 500);
+        }
+
+
+        if ($results->isEmpty()) {
+            return response()->json(['message' => 'No drugs found matching your search'], 404);
         }
 
         return response()->json($results);

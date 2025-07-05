@@ -13,7 +13,8 @@ class UserMedication extends Model
         'rxcui',
         'name',
         'base_names',
-        'dosage_forms'
+        'dosage_forms',
+        'status',
     ];
 
     protected $casts = [
