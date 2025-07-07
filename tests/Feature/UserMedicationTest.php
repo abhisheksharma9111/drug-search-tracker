@@ -45,28 +45,33 @@ class UserMedicationTest extends TestCase
         $this->assertCount(1, $user->medications);
     }
 
-    public function test_get_medications()
-    {
-        $user = User::factory()->create();
-        Sanctum::actingAs($user);
+  public function test_get_medications()
+{
+    $user = User::factory()->create();
+    Sanctum::actingAs($user);
 
-        $medication = $user->medications()->create([
+    $medication = $user->medications()->create([
+        'rxcui' => '123',
+        'name' => 'Test Drug',
+        'base_names' => ['Test Ingredient'],
+        'dosage_forms' => ['Tablet'],
+        'status' => 'active', 
+        'created_at' => now() 
+    ]);
+
+    $response = $this->getJson('/api/user/medications');
+
+    $response->assertStatus(200)
+        ->assertJsonFragment([
+            'id' => $medication->id,
             'rxcui' => '123',
             'name' => 'Test Drug',
-            'base_names' => ['Test Ingredient'],
-            'dosage_forms' => ['Tablet']
+            'ingredients' => ['Test Ingredient'], 
+            'forms' => ['Tablet'], 
+            'status' => 'active', 
+            'created_at' => $medication->created_at->format('Y-m-d H:i:s') 
         ]);
-
-        $response = $this->getJson('/api/user/medications');
-
-        $response->assertStatus(200)
-            ->assertJsonFragment([
-                'rxcui' => '123',
-                'name' => 'Test Drug',
-                'base_names' => ['Test Ingredient'],
-                'dosage_forms' => ['Tablet']
-            ]);
-    }
+}
 
 
 
@@ -76,7 +81,7 @@ class UserMedicationTest extends TestCase
         $user = User::factory()->create();
         Sanctum::actingAs($user);
 
-        // Create a medication with specific rxcui
+        
         $medication = $user->medications()->create([
             'rxcui' => '123',
             'name' => 'Test Drug',
@@ -84,17 +89,17 @@ class UserMedicationTest extends TestCase
             'dosage_forms' => ['Tablet']
         ]);
 
-        // Delete using rxcui in the URL
+       
         $response = $this->deleteJson('/api/user/medications/' . $medication->rxcui);
 
-        // Assert the expected response structure and status
+       
         $response->assertStatus(200)
             ->assertJson([
                 'message' => 'Medication deleted successfully',
                 'deleted_rxcui' => '123'
             ]);
 
-        // Verify the medication was actually deleted
+        
         $this->assertCount(0, $user->fresh()->medications);
     }
 

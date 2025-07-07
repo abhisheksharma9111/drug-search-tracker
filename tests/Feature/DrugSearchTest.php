@@ -1,6 +1,7 @@
 <?php
 
-
+namespace Tests\Feature;
+use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use App\Models\UserMedication;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -52,5 +53,5 @@ class DrugSearchTest extends TestCase
             ]);
     }
 
-    
+
 }
